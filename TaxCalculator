@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updated Income Tax Calculator - New Regime</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #0074D9;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #resultGreen {
+            font-weight: bold;
+            margin-top: 20px;
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Updated Income Tax Calculator - New Regime</h1>
+        <label for="income">Annual Income:</label>
+        <input type="number" id="income" placeholder="Enter your annual income">
+        <label for="deductions">Deductions:</label>
+        <input type="number" id="deductions" placeholder="Enter deductions (if any) apart from standard diduction">
+        <button onclick="calculateTax()">Calculate Tax</button>
+        <div id="result"></div>
+        <div id="resultGreen"></div>
+    </div>
+
+    <script>
+        function calculateTax() {
+            const income = parseFloat(document.getElementById('income').value);
+            const deductionsFromUI = parseFloat(document.getElementById('deductions').value);
+            var deductions = (deductionsFromUI > 0) ? deductionsFromUI : 0;
+
+            // Define tax rates for old and new regimes
+            const oldRegimeRate = 0.3; // Example rate for the old regime
+            const newRegimeRate = 0.2; // Example rate for the new regime
+
+            // Calculate tax amounts
+            var oldNewRegimeTax = (income - deductions);
+            var newRegimeTax = (income - deductions);
+            var taxToPay_newRegime = 0.0;
+            var taxToPay_oldNewRegime = 0.0;
+
+            if (oldNewRegimeTax > 300000) {
+                var oldNewRegimeTax = oldNewRegimeTax - 50000;
+                if (oldNewRegimeTax >= 300000 && oldNewRegimeTax < 600000) {
+                    taxToPay_oldNewRegime = ((oldNewRegimeTax - 299999) * 5) / 100;
+                }
+                else if (oldNewRegimeTax >= 600000 && oldNewRegimeTax < 900000) {
+                    taxToPay_oldNewRegime += 15000;
+                    taxToPay_oldNewRegime += ((oldNewRegimeTax - 599999) * 10) / 100;
+                }
+                else if (oldNewRegimeTax >= 900000 && oldNewRegimeTax < 1200000) {
+                    taxToPay_oldNewRegime += 15000;
+                    taxToPay_oldNewRegime += 30000;
+                    taxToPay_oldNewRegime += ((oldNewRegimeTax - 899999) * 15) / 100;
+                }
+                else if (oldNewRegimeTax >= 1200000 && oldNewRegimeTax < 1500000) {
+                    taxToPay_oldNewRegime += 15000;
+                    taxToPay_oldNewRegime += 30000;
+                    taxToPay_oldNewRegime += 45000;
+                    taxToPay_oldNewRegime += ((oldNewRegimeTax - 1199999) * 20) / 100;
+                }
+                else {
+                    taxToPay_oldNewRegime += 15000;
+                    taxToPay_oldNewRegime += 30000;
+                    taxToPay_oldNewRegime += 45000;
+                    taxToPay_oldNewRegime += 60000;
+                    taxToPay_oldNewRegime += ((oldNewRegimeTax - 1499999) * 30) / 100;
+                }
+            }
+
+
+
+            if (newRegimeTax > 300000) {
+                var newRegimeTax = newRegimeTax - 75000;
+                if (newRegimeTax >= 300000 && newRegimeTax < 700000) {
+                    taxToPay_newRegime = ((newRegimeTax - 299999) * 5) / 100;
+                }
+                else if (newRegimeTax >= 700000 && newRegimeTax < 1000000) {
+                    taxToPay_newRegime += 20000;
+                    taxToPay_newRegime += ((newRegimeTax - 699999) * 10) / 100;
+                }
+                else if (newRegimeTax >= 1000000 && newRegimeTax < 1200000) {
+                    taxToPay_newRegime += 20000;
+                    taxToPay_newRegime += 30000;
+                    taxToPay_newRegime += ((newRegimeTax - 999999) * 15) / 100;
+                }
+                else if (newRegimeTax >= 1200000 && newRegimeTax < 1500000) {
+                    taxToPay_newRegime += 20000;
+                    taxToPay_newRegime += 30000;
+                    taxToPay_newRegime += 30000;
+                    taxToPay_newRegime += ((newRegimeTax - 1199999) * 20) / 100;
+                }
+                else {
+                    taxToPay_newRegime += 20000;
+                    taxToPay_newRegime += 30000;
+                    taxToPay_newRegime += 30000;
+                    taxToPay_newRegime += 60000;
+                    taxToPay_newRegime += ((newRegimeTax - 1499999) * 30) / 100;
+                }
+            }
+
+            // Display results
+            document.getElementById('result').innerHTML = `
+                <p>Tax to pay New Regime(old): Rs.${taxToPay_oldNewRegime.toFixed(2)}</p>
+                <p>Tax to pay New Regime(Updated): Rs.${taxToPay_newRegime.toFixed(2)}</p>
+            `;
+            if (taxToPay_oldNewRegime > taxToPay_newRegime)
+                document.getElementById('resultGreen').innerHTML = `
+                <p>You can save Rs.${(taxToPay_oldNewRegime - taxToPay_newRegime).toFixed(2)} with proposed change in New Regime slab</p>
+                
+            `;
+        }
+    </script>
+</body>
+
+</html>
